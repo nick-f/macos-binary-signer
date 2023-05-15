@@ -53,8 +53,6 @@ function main() {
 
   create_package
 
-  sign_package
-
   open "build"
   log "$SIGNED_PACKAGE_DESTINATION is ready to upload and distribute"
 }
@@ -79,29 +77,14 @@ function sign_binary {
 }
 
 function create_package {
-  local temporary_packages_project_file; temporary_packages_project_file="buildkite-agent-temp.pkgproj"
-
   log "Creating package"
 
-  if [[ -f /usr/local/bin/packagesbuild ]]; then
-    cp buildkite-agent.pkgproj "$temporary_packages_project_file"
-    /usr/local/bin/packagesbuild --project "$temporary_packages_project_file"
-    update_package_metadata "$temporary_packages_project_file"
-    rm "$temporary_packages_project_file"
-  else
-    log_error "packagesbuild not installed. Install Packages from the repo root then run again"
-    exit 1
-  fi
-}
-
-function sign_package {
-  unsigned_package="build/buildkite-agent.pkg"
-
-  log "Signing $unsigned_package"
-
-  (/usr/bin/productsign --sign "$INSTALLER_SIGNING_IDENTITY" "$unsigned_package" "$SIGNED_PACKAGE_DESTINATION" && \
-    log "Created and signed: $SIGNED_PACKAGE_DESTINATION" && rm "$unsigned_package" && log "Removed unsigned package: $unsigned_package") || \
-    log_error "Error signing $SIGNED_PACKAGE_DESTINATION"
+  pkgbuild --root ./src/bin \
+    --install-location '/opt/buildkite/bin' \
+    --identifier "$PACKAGE_IDENTIFIER" \
+    --version "$LATEST_VERSION" \
+    --sign "$INSTALLER_SIGNING_IDENTITY" \
+    "./build/buildkite-agent-$LATEST_VERSION.pkg"
 }
 
 function log {
