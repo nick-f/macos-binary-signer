@@ -1,5 +1,29 @@
 #!/bin/bash
-# Download, package, and sign the latest version of the buildkite-agent
+# Download, package, and sign the latest version of the buildkite-agent.
+#
+# Only the binary is packaged. The package installer will not overwrite any
+# config or hooks that you may have configured.
+#
+# Copyright 2023 Nick F
+# https://github.com/nick-f/macos-binary-signer/blob/main/buildkite-agent/run.bash
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the “Software”), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 
 RELEASE_INFO_URL="https://buildkite.com/agent/releases/latest?platform=darwin&arch=arm64&system=darwin&machine=arm64"
 LATEST_RELEASE=$(curl -s "$RELEASE_INFO_URL")
